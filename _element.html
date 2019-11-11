@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="polymer-todo-list-vanilla">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `polymer-todo-list-vanilla`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PolymerTodoListVanilla extends Polymer.Element {
+      static get is() { return 'polymer-todo-list-vanilla'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'polymer-todo-list-vanilla'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(PolymerTodoListVanilla.is, PolymerTodoListVanilla);
+  </script>
+</dom-module>

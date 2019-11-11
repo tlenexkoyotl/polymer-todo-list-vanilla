@@ -1,0 +1,99 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="polymer-todo-list-vanilla">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            .disabled {
+                color: #ccccff;
+            }
+        </style>
+        <h2>[[title]]!</h2>
+        <div>
+            <input type="text" id="newTask">
+            <input type="button" id="submit" value="Save" on-click="_saveTask">
+        </div>
+        <div>
+            <ul id='list'>
+                <template is="dom-repeat" items="[[tasks]]" as="task">
+                    <template is="dom-if" if="[[!task.checked]]">
+                        <li>
+                            <input type="checkbox" on-change="_checkTask">
+                            [[task.name]]
+                            <input type="button" on-click="_removeTask" value="x">
+                        </li>
+                    </template>
+                    <template is="dom-if" if="[[task.checked]]">
+                        <li class="disabled">
+                            <input type="checkbox" on-change="_checkTask">
+                            [[task.name]]
+                            <input type="button" on-click="_removeTask" value="x">
+                        </li>
+                    </template>
+                </template>
+            </ul>
+        </div>
+    </template>
+
+    <script>
+        /**
+         * `polymer-todo-list-vanilla`
+         *
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class PolymerTodoListVanilla extends Polymer.Element {
+            static get is() {
+                return 'polymer-todo-list-vanilla';
+            }
+
+            static get properties() {
+                return {
+                    title: {
+                        type: String,
+                        value: 'My chores'
+                    },
+                    tasks: {
+                        type: Array,
+                        value: []
+                    }
+                };
+            }
+
+            _saveTask() {
+                const labelNode = this.$.newTask;
+                const newTaskObject = {
+                    name: labelNode.value,
+                    checked: false
+                };
+                this.tasks = [...this.tasks, newTaskObject];
+                labelNode.value = '';
+            }
+
+            _checkTask(event) {
+                const checkBox = event.currentTarget;
+                const checked = checkBox.checked;
+                event.model.task.checked = checked;
+                const updatedTask = event.model.task;
+                checkBox.parentElement.classList.toggle('disabled');
+
+                this.tasks.splice(event.model.index, 1, updatedTask);
+
+                this.tasks = [...this.tasks];
+            }
+
+            _removeTask(event) {
+                this.tasks.splice(event.model.index, 1);
+
+                this.tasks = [...this.tasks];
+            }
+        }
+
+        window.customElements.define(PolymerTodoListVanilla.is, PolymerTodoListVanilla);
+    </script>
+</dom-module>
